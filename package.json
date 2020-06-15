@@ -1,0 +1,23 @@
+{
+  "name": "personal_website",
+  "version": "1.0.0",
+  "description": "| 描述 | 接口 | 方法 | url参数 | 备注 |\r | ---- | ---- | ---- | ------- | ---- |\r |      |      |      |         |      |",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subtleCode/personal_website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/subtleCode/personal_website/issues"
+  },
+  "homepage": "https://github.com/subtleCode/personal_website#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
