@@ -18,9 +18,21 @@ const getList = (author,keyword) => {
         author: "lisi",
         createTime: 111
     }
-  ]
+  ];
+}
+// 根据ID号查询博客文
+const getDetail = (id) => {
+  return {
+          id: 1,
+          title: "标题A",
+          content: "内容A",
+          author: "zhanshan",
+          createTime: 111
+      };
 }
 
+
 module.exports = {
-  getList
+  getList,
+  getDetail
 }

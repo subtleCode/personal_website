@@ -1,7 +1,8 @@
 // 处理“博客”相关的路由
 
-const {getList} = require("../controller/blog.js");
+const {getList,getDetail} = require("../controller/blog.js");
 const {SuccessModule,ErrorModule} = require("../module/responseModule.js");
+
 
 const blogRouter = (request,response) => {
 
@@ -11,33 +12,30 @@ const blogRouter = (request,response) => {
 
   // 获取博客列表
   if( method === "GET" && path === "/api/blog/list" ){
-    const data = getList(query.author,query.keyword);
-    return new SuccessModule(data);
+    return new SuccessModule(getList(query.author,query.keyword));
   }
 
   // 获取博客
   if( method === "GET" && path === "/api/blog/detail" ){
-    return {
-      message:"获取博客"
-    }
+    return new SuccessModule(getDetail(1));
   }
 
   // 新建一篇博客
-  if( method === "GET" && path === "/api/blog/new" ){
+  if( method === "POST" && path === "/api/blog/new" ){
     return {
       message:"新建一篇博客"
     }
   }
 
   // 删除一篇博客
-  if( method === "GET" && path === "/api/blog/del" ){
+  if( method === "POST" && path === "/api/blog/del" ){
     return {
       message:"删除一篇博客"
     }
   }
 
   // 更新一篇博客
-  if( method === "GET" && path === "/api/blog/update" ){
+  if( method === "POST" && path === "/api/blog/update" ){
     return {
       message:"更新一篇博客"
     }
