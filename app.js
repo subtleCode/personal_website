@@ -5,7 +5,7 @@ const userRouter = require("./src/router/user.js");
 
 http.createServer(function(request,response){
 	// 设置返回数据类型
-	response.setHeader("content-type","application/json");
+	response.setHeader("content-type","application/json;charset=utf-8");
 
 	// 获取url
 	const url = request.url;
@@ -30,13 +30,10 @@ http.createServer(function(request,response){
 			response.end(
 				JSON.stringify(rtnData)
 			);
+			response.end("404 Not Found");
 		}
-
 		// 未命中路由
-		response.end("404 Not Found");
 	});
-
-
 }).listen(3000,function(){
 	console.log("Server is running..");
 });
@@ -44,16 +41,32 @@ http.createServer(function(request,response){
 // 获取post请求数据
 const getPostData = request => {
 	const promise = new Promise((resolve,reject)=>{
-		let postData = {};
-		if( request.method === "POST" && request.headers["Content-Type"] === "application/json"  ){
-			request.on("data", chunk => {
-				postData += chunk.toString();
-				if(!postData) return;
-			});
+		// 之处理POST请求
+		if(request.method != "POST"){
+			resolve({});
+			return;
 		}
-		resolve(
-			JSON.stringify(postData)
-		);
+		// POST数据类型必须是application/json
+		if(request.headers["Content-Type"] === "application/json"){
+			resolve({});
+			return;
+		}
+		// 读取数据
+		let postData = "";
+		request.on("data",chunk=>{
+			postData += chunk.toString();
+		});
+		request.on("end",chunk=>{
+			// 数据为空，直接返回空对象
+			if(!postData){
+				resolve({});
+				return;
+			}
+			// 数据不为空，将JSON解析为对象
+			resolve(
+				JSON.parse(postData)
+			);
+		});
 	});
 	return promise;
 }

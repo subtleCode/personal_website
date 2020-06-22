@@ -1,6 +1,12 @@
 // 处理“博客”相关的路由
 
-const {getList,getDetail} = require("../controller/blog.js");
+const {
+  getList,
+  getDetail,
+  newBlog,
+  updateBlog,
+  deleteBlog
+} = require("../controller/blog.js");
 const {SuccessModule,ErrorModule} = require("../module/responseModule.js");
 
 
@@ -22,22 +28,24 @@ const blogRouter = (request,response) => {
 
   // 新建一篇博客
   if( method === "POST" && path === "/api/blog/new" ){
-    return {
-      message:"新建一篇博客"
+    return new SuccessModule(newBlog(request.body));
+  }
+
+  // 更新一篇博客
+  if( method === "POST" && path === "/api/blog/update" ){
+    if(updateBlog(request.body)){
+      return new SuccessModule();
+    }else{
+      return new ErrorModule();
     }
   }
 
   // 删除一篇博客
   if( method === "POST" && path === "/api/blog/del" ){
-    return {
-      message:"删除一篇博客"
-    }
-  }
-
-  // 更新一篇博客
-  if( method === "POST" && path === "/api/blog/update" ){
-    return {
-      message:"更新一篇博客"
+    if(deleteBlog(request.body.id)){
+      return new SuccessModule();
+    }else{
+      return new ErrorModule();
     }
   }
 

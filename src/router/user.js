@@ -1,4 +1,7 @@
 
+const {login} = require("../controller/user.js");
+const {SuccessModule,ErrorModule} = require("../module/responseModule.js");
+
 // 处理用户相关路由
 const userRouter = (request,response) => {
 
@@ -9,11 +12,13 @@ const userRouter = (request,response) => {
 
   // 登陆
   if( method === "POST" && path === "/api/user/login" ){
-    return {
-      message:"登陆请求"
+    const {username,password} = request.body;
+    if(login(username,password)){
+      return new SuccessModule();
+    }else{
+      return new ErrorModule();
     }
   }
-
 }
 
 module.exports = userRouter;

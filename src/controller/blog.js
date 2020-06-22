@@ -31,8 +31,30 @@ const getDetail = (id) => {
       };
 }
 
+// 新建一篇博客
+const newBlog = (blog) => {
+  // 返回新建博客的id号,以表示博客新建成功
+  return {
+    id:3
+  }
+}
+
+// 更新博客
+const updateBlog = (blog) => {
+  // 返回true或false以表示成功与失败
+  return true;
+}
+
+// 删除博客
+const deleteBlog = (id) => {
+  // 返回布尔值，表示成功与失败
+  return true;
+}
 
 module.exports = {
   getList,
-  getDetail
+  getDetail,
+  newBlog,
+  updateBlog,
+  deleteBlog
 }
