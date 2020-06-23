@@ -13,11 +13,14 @@ const userRouter = (request,response) => {
   // 登陆
   if( method === "POST" && path === "/api/user/login" ){
     const {username,password} = request.body;
-    if(login(username,password)){
-      return new SuccessModule();
-    }else{
-      return new ErrorModule();
-    }
+    const result = login(username,password);
+    return result.then(user => {
+      if(user.username){
+        return new SuccessModule();
+      }else{
+        return new ErrorModule();
+      }
+    });
   }
 }
 

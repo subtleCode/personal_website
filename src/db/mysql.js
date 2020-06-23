@@ -8,7 +8,7 @@ const connection = mysql.createConnection(MYSQL_CONF);
 connection.connect();
 
 // 统一执行sql的函数
-function exec(sql){
+const exec = (sql)=>{
   const promise = new Promise((resolve,reject)=>{
     connection.query(sql,(error,result) => {
       if(error){
@@ -18,8 +18,9 @@ function exec(sql){
       resolve(result);
     });
   });
+  return promise;
 }
 
-module.exorts = {
+module.exports = {
   exec
 }

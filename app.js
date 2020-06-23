@@ -17,7 +17,6 @@ http.createServer(function(request,response){
 	getPostData(request).then(postData=>{
 		// 将解析到的POST请求体加入request请求中
 		request.body = postData;
-
 		// 处理路由并返回的数据
 		let result = null;
 		// 博客的路由
@@ -32,12 +31,14 @@ http.createServer(function(request,response){
 		if( result != null ){
 			result.then(data => {
 				response.end(
-					JSON.stringify(result)
+					JSON.stringify(data)
 				);
 			});
-			response.end("404 Not Found");
+			return;
 		}
 		// 未命中路由
+		response.end("404 Not Found");
+
 	});
 }).listen(3000,function(){
 	console.log("Server is running..");

@@ -15,10 +15,12 @@ const blogRouter = (request,response) => {
   const method = request.method;
   const path = request.path;
   const query = request.query;
+  const body = request.body;
 
   // 获取博客列表
   if( method === "GET" && path === "/api/blog/list" ){
-    const result = getList(query.author,query.keyword)
+    const {author="",keyword=""} = query;
+    const result = getList(author,keyword)
     return result.then(data=>{
       return new SuccessModule(data);
     });
@@ -26,31 +28,43 @@ const blogRouter = (request,response) => {
 
   // 获取博客
   if( method === "GET" && path === "/api/blog/detail" ){
-    return new SuccessModule(getDetail(1));
+    const result = getDetail(query.id);
+    return result.then(data => {
+      return new SuccessModule(data);
+    });
   }
 
   // 新建一篇博客
   if( method === "POST" && path === "/api/blog/new" ){
-    return new SuccessModule(newBlog(request.body));
+    const result = newBlog(body);
+    return result.then(data => {
+      return new SuccessModule(data.insertId);
+    });
   }
 
   // 更新一篇博客
   if( method === "POST" && path === "/api/blog/update" ){
-    if(updateBlog(request.body)){
-      return new SuccessModule();
-    }else{
-      return new ErrorModule();
-    }
+    const result = updateBlog(body);
+    return result.then(flag=>{
+      if(flag){
+        return new SuccessModule();
+      }else{
+        return new ErrorModule();
+      }
+    });
   }
 
   // 删除一篇博客
-  if( method === "POST" && path === "/api/blog/del" ){
-    if(deleteBlog(request.body.id)){
-      return new SuccessModule();
-    }else{
-      return new ErrorModule();
-    }
+  if( method === "POST" && path === "/api/blog/delete" ){
+    const {id,author} = body;
+    const result = deleteBlog(id,author);
+    return result.then(flag => {
+      if(flag){
+        return new SuccessModule();
+      }else{
+        return new ErrorModule();
+      }
+    });
   }
-
 }
 module.exports = blogRouter;

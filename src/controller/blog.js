@@ -1,6 +1,8 @@
 // 处理blog相关的业务逻辑
 
+// exec函数范围直是promise对象
 const {exec} = require("../db/mysql.js");
+
 
 
 // 根据作者与关键字返回数据
@@ -18,33 +20,47 @@ const getList = (author,keyword) => {
 
 // 根据ID号查询博客文
 const getDetail = (id) => {
-  return {
-          id: 1,
-          title: "标题A",
-          content: "内容A",
-          author: "zhanshan",
-          createTime: 111
-      };
+  const sql = `select * from blog where id='${id}'`;
+  return exec(sql).then(rows =>{
+    return rows[0];
+  });
+  return exec(sql);
 }
 
 // 新建一篇博客
 const newBlog = (blog) => {
-  // 返回新建博客的id号,以表示博客新建成功
-  return {
-    id:3
-  }
+
+  const {title="",content="",author=""} = blog;
+  const createtime = Date.now();
+  const sql = `insert into blog(title,content,author,createtime)
+  values('${title}','${content}','${author}',${createtime})`;
+  return exec(sql);
 }
 
 // 更新博客
 const updateBlog = (blog) => {
-  // 返回true或false以表示成功与失败
-  return true;
+  const {id,title,content} = blog;
+  const sql = `update blog set title='${title}',content='${content}' where id=${id}`;
+  return exec(sql).then(updateData => {
+    if(updateData.affectedRows > 0){
+      return true;
+    }else{
+      return false;
+    }
+  });
 }
 
 // 删除博客
-const deleteBlog = (id) => {
-  // 返回布尔值，表示成功与失败
-  return true;
+const deleteBlog = (id,author) => {
+  const sql = `delete from blog where id = ${id} and author='${author}'`;
+  return exec(sql).then(delData =>{
+    // 返回布尔值，表示成功与失败
+    if(delData.affectedRows > 0){
+      return true;
+    }else{
+      return false;
+    }
+  });
 }
 
 module.exports = {
