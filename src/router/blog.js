@@ -18,7 +18,10 @@ const blogRouter = (request,response) => {
 
   // 获取博客列表
   if( method === "GET" && path === "/api/blog/list" ){
-    return new SuccessModule(getList(query.author,query.keyword));
+    const result = getList(query.author,query.keyword)
+    return result.then(data=>{
+      return new SuccessModule(data);
+    });
   }
 
   // 获取博客

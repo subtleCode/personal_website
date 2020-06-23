@@ -17,12 +17,31 @@
 
 ### 数据存储
 
+#### 用户表
+
+| column   | datatype    | pk   | nn   | ai   | Defaul |
+| -------- | ----------- | ---- | ---- | ---- | ------ |
+| id       | int         | Y    | Y    | Y    |        |
+| username | varchar(20) |      | Y    |      |        |
+| password | varchar(20) |      | Y    |      |        |
+| realname | varchar(10) |      | Y    |      |        |
+
+#### 博客表
+
+| column     | datatype    | pk   | nn   | ai   | Defaul |
+| ---------- | ----------- | ---- | ---- | ---- | ------ |
+| id         | int         | Y    | Y    | Y    |        |
+| title      | varchar(50) |      | Y    |      |        |
+| content    | longtext    |      | Y    |      |        |
+| createtime | bigint(20)  |      | Y    |      | 0      |
+| author     | varchar(20) |      | Y    |      |        |
+
 
 
 ## 目录结构
 
-- src/router 路由控制目录
-- src/models 数据模型目录
+- src/router 路由控制
+- src/models 数据模型
 - config 存放配置文件的目录
 - test 存放测试文件的目录
 - public 存放静态文件（css、js、img...）的目录

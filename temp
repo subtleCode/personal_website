@@ -1,0 +1,2 @@
+GRANT privileges ON blog.* TO 'sunyu'@'localhost'
+alert user 'root'@'localhost' identified with mysql-native_password by '123456';

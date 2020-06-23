@@ -19,17 +19,22 @@ http.createServer(function(request,response){
 		request.body = postData;
 
 		// 处理路由并返回的数据
-		let rtnData = null;
-		if( rtnData == null ){
-			rtnData = blogRouter(request,response);
+		let result = null;
+		// 博客的路由
+		if( result == null ){
+			result = blogRouter(request,response);
 		}
-		if( rtnData == null ){
-			rtnData = userRouter(request,response);
+		// 用户的路由
+		if( result == null ){
+			result = userRouter(request,response);
 		}
-		if( rtnData != null ){
-			response.end(
-				JSON.stringify(rtnData)
-			);
+		// 响应结果
+		if( result != null ){
+			result.then(data => {
+				response.end(
+					JSON.stringify(result)
+				);
+			});
 			response.end("404 Not Found");
 		}
 		// 未命中路由
