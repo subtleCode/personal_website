@@ -13,6 +13,19 @@ http.createServer(function(request,response){
   request.path = url.split("?")[0];
   // 解析请求参数
   request.query = querystring.parse(url.split("?")[1]);
+
+	// 解析cookie
+	const cookieStr = request.headers.cookie || '';
+	request.cookie = {};
+	// 将cookie字符串转为对象
+	cookieStr.split(";").forEach(item => {
+		if(!item) return;
+		const arr = item.split("=");
+		const key = arr[0];
+		const value = arr[1];
+		request.cookie[key] = value;
+	});
+
 	// 解析POST请求体
 	getPostData(request).then(postData=>{
 		// 将解析到的POST请求体加入request请求中
@@ -47,7 +60,7 @@ http.createServer(function(request,response){
 // 获取post请求数据
 const getPostData = request => {
 	const promise = new Promise((resolve,reject)=>{
-		// 之处理POST请求
+		// 只处理POST请求
 		if(request.method != "POST"){
 			resolve({});
 			return;

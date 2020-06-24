@@ -16,12 +16,24 @@ const userRouter = (request,response) => {
     const result = login(username,password);
     return result.then(user => {
       if(user.username){
+        // 为响应对象绑定cookie
+        // response.setHeader('Set-Cookie',`username=${user.username}；path=/;`);
         return new SuccessModule();
       }else{
         return new ErrorModule();
       }
     });
   }
+
+
+  if(method === "GET" && path === "/api/user/check"){
+    if(request.cookie.username){
+      return Promise.resolve(new SuccessModule());
+    }else{
+      return Promise.resolve(new ErrorModule("请先登陆"));
+    }
+  }
+
 }
 
 module.exports = userRouter;
