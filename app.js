@@ -5,7 +5,7 @@ const userRouter = require("./src/router/user.js");
 
 http.createServer(function(request,response){
 	// 设置返回数据类型
-	response.setHeader("content-type","application/json;charset=utf-8");
+	response.setHeader("content-type","application/json;charset=utf-8;");
 
 	// 获取url
 	const url = request.url;
@@ -21,8 +21,8 @@ http.createServer(function(request,response){
 	cookieStr.split(";").forEach(item => {
 		if(!item) return;
 		const arr = item.split("=");
-		const key = arr[0];
-		const value = arr[1];
+		const key = arr[0].trim();
+		const value = arr[1].trim();
 		request.cookie[key] = value;
 	});
 

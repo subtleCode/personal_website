@@ -8,7 +8,7 @@ class BaseModule {
     if( typeof(data) === "string"  ){
       this.message = data;
       data = null;
-      string = null;
+      message = null;
     }
     if(data){
       this.data = data;

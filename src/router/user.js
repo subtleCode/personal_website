@@ -11,13 +11,13 @@ const userRouter = (request,response) => {
   const path = url.split("?")[0];
 
   // 登陆
-  if( method === "POST" && path === "/api/user/login" ){
-    const {username,password} = request.body;
+  if( method === "GET" && path === "/api/user/login" ){
+    const {username,password} = request.query;
     const result = login(username,password);
     return result.then(user => {
       if(user.username){
         // 为响应对象绑定cookie
-        // response.setHeader('Set-Cookie',`username=${user.username}；path=/;`);
+        response.setHeader("Set-Cookie",`username=${user.username}; path=/; httponly`);
         return new SuccessModule();
       }else{
         return new ErrorModule();
@@ -30,7 +30,7 @@ const userRouter = (request,response) => {
     if(request.cookie.username){
       return Promise.resolve(new SuccessModule());
     }else{
-      return Promise.resolve(new ErrorModule("请先登陆"));
+      return Promise.resolve(new ErrorModule());
     }
   }
 
