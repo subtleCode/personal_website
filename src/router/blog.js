@@ -10,6 +10,13 @@ const {
 const {SuccessModule,ErrorModule} = require("../module/responseModule.js");
 
 
+// 登陆验证
+const check = request => {
+  if(!request.session.username){
+    return Promise.resolve(new ErrorModule("尚未登陆"));
+  }
+}
+
 const blogRouter = (request,response) => {
 
   const method = request.method;
@@ -36,6 +43,14 @@ const blogRouter = (request,response) => {
 
   // 新建一篇博客
   if( method === "POST" && path === "/api/blog/new" ){
+
+    // 登陆验证
+    const checkResult = check(request);
+    if(checkResult){
+      return checkResult;
+    }
+
+    // 新建博客的操作
     const result = newBlog(body);
     return result.then(data => {
       return new SuccessModule(data.insertId);
@@ -44,6 +59,14 @@ const blogRouter = (request,response) => {
 
   // 更新一篇博客
   if( method === "POST" && path === "/api/blog/update" ){
+
+    // 登陆验证
+    const checkResult = check(request);
+    if(checkResult){
+      return checkResult;
+    }
+
+    // 更新博客的操作
     const result = updateBlog(body);
     return result.then(flag=>{
       if(flag){
@@ -56,6 +79,14 @@ const blogRouter = (request,response) => {
 
   // 删除一篇博客
   if( method === "POST" && path === "/api/blog/delete" ){
+
+    // 登陆验证
+    const checkResult = check(request);
+    if(checkResult){
+      return checkResult;
+    }
+
+    // 删除博客的操作
     const {id,author} = body;
     const result = deleteBlog(id,author);
     return result.then(flag => {

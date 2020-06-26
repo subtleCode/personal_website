@@ -35,7 +35,7 @@ const userRouter = (request,response) => {
     });
   }
 
-
+  // 登陆验证
   if(method === "GET" && path === "/api/user/check"){
     if(request.cookie.username){
       return Promise.resolve(new SuccessModule());

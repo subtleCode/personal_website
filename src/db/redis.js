@@ -19,6 +19,7 @@ function set(key,value){
   redisClient.set(key,value,redis.print);
   redisClient.expire(key,userid_expire_time);
 }
+
 // 通过key获取value
 function get(key){
   const promise = new Promise((resolve,reject) => {
