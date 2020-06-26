@@ -8,6 +8,13 @@ let MYSQL_CONF = {
   database: "blog"
 }
 
+let REDIS_CONF = {
+  host: "localhost",
+  port: "6379"
+}
+
+
 module.exports = {
-  MYSQL_CONF
+  MYSQL_CONF,
+  REDIS_CONF
 }

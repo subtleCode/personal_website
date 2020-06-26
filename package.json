@@ -4,9 +4,9 @@
   "description": "| 描述 | 接口 | 方法 | url参数 | 备注 |\r | ---- | ---- | ---- | ------- | ---- |\r |      |      |      |         |      |",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=dev",
-    "prd": "cross-env NODE_ENV=production",
+    "prd": "cross-env NODE_ENV=production"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/subtleCode/personal_website#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "redis": "^3.0.2"
   }
 }

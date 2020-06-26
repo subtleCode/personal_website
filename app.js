@@ -2,8 +2,7 @@ const http = require("http");
 const querystring = require("querystring");
 const blogRouter = require("./src/router/blog.js");
 const userRouter = require("./src/router/user.js");
-
-const SESSION_DATA = {};
+const {set,get,userid_expire_time} = require("./src/db/redis.js");
 
 http.createServer(function(request,response){
 	// 设置返回数据类型
@@ -28,22 +27,28 @@ http.createServer(function(request,response){
 		request.cookie[key] = value;
 	});
 
-	// session
+
+	// 解析 session
 	let needCookie = false;
 	let userid = request.cookie.userid;
-	if(userid){
-		if(!SESSION_DATA[userid]){
-			SESSION_DATA[userid] = {};
-		}
-	}else{
-		needCookie = true;
-		userid = `${Date.now()}_${Math.random()}`;
-		SESSION_DATA[userid] = {};
+	if(!userid){ // 如果cookie中没有userid
+		needCookie = true; // 客户端需要绑定cookie
+		userid = `${Date.now()}_${Math.random()}`; // 生成一个userid
+		set(userid,{}); // 初始化redis数据库中的值
 	}
-	request.session = SESSION_DATA[userid];
+	// 获取 session
+	request.sessionId = userid; // 将session的id号绑定到request对象上
+	get(userid).then(sessionData => {
+		if(sessionData == null){ // userid在redis数据库中对应的值为空
+			set(userid,{}); // 初始化userid的在redis中的值
+			sessionData = {}; // 将sessionData初始化为空对象
+		}
+		request.session = sessionData;
 
-	// 解析POST请求体
-	getPostData(request).then(postData=>{
+		//处理post data
+		return getPostData(request);
+	}).then(postData=>{
+
 		// 将解析到的POST请求体加入request请求中
 		request.body = postData;
 		// 处理路由并返回的数据
@@ -61,7 +66,7 @@ http.createServer(function(request,response){
 			result.then(data => {
 				if(needCookie){
 					// 为响应对象绑定cookie
-					response.setHeader("Set-Cookie",`userid=${userid}; path=/; httponly`);
+					response.setHeader("Set-Cookie",`userid=${userid}; path=/; httponly; expires=${getCookieExpires()}`);
 				}
 				response.end(
 					JSON.stringify(data)
@@ -80,7 +85,7 @@ http.createServer(function(request,response){
 // 获取post请求数据
 const getPostData = request => {
 	const promise = new Promise((resolve,reject)=>{
-		// 只处理POST请求
+		// 只处理POST请求，所以非POST请求直接结束
 		if(request.method != "POST"){
 			resolve({});
 			return;
@@ -108,4 +113,10 @@ const getPostData = request => {
 		});
 	});
 	return promise;
+}
+// cookie失效时间
+const getCookieExpires = () => {
+	const date = new Date();
+	date.setTime(date.getTime() + (userid_expire_time*1000));
+	return date.toGMTString();
 }
