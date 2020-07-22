@@ -1,0 +1,64 @@
+html,body {
+  height: 100%;
+}
+header {
+  height: 100%;
+}
+/* 导航栏 */
+nav {
+  background-color: #333;
+}
+
+nav a {
+  color: white;
+  display: inline-block;
+}
+
+nav a:not(:first-child) {
+  padding: 10px 5px;
+}
+
+nav .logo {
+  margin-right: 30px;
+}
+
+
+
+
+/* 个人介绍 */
+.personal {
+  text-align: center;
+  margin-top: 80px;
+}
+
+/* 网站介绍 */
+section {
+  height: 100%;
+  border: solid red 1px;
+}
+section .container {
+  border: solid skyblue 1px;
+  height: 80%;
+  padding-top: 10%;
+}
+.blog {
+}
+.notebook {
+}
+.project {
+}
+
+/* 网站末尾 */
+footer {
+  background-color: grey;
+  padding: 5px 0;
+}
+
+.test {
+  height: 100%;
+  background-color: skyblue;
+}
+.test > div {
+  height: 80%;
+  padding-top:10%;
+}

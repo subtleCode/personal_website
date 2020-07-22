@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>博客首页</h1>
+    <ul id="app">
+      <li v-for="item in list">
+        <h2>{{ item.id }}-{{ item.title }}</h2>
+        <p>{{ item.content }}</p>
+        <a>{{ item.author }}</a>
+      </li>
+    </ul>
+    <script>
+
+      //向服务器请求数据
+      const url = "/api/blog/list";
+      axios.get(url).then(function(response){
+        const responseData = response.data.data || {};
+        return responseData;
+      }).then(responseData => {
+        const app = new Vue({
+          el: "#app",
+          data: {
+            list:responseData,
+            url:url
+          }
+        });
+      });
+    </script>
+</body>
+</html>
